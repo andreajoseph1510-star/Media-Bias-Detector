@@ -120,50 +120,62 @@ if st.button("Analyze Bias"):
         with st.spinner("Analyzing article..."):
 
             prompt = f"""
-Analyze the following news article and return the result in EXACTLY this format.
+        Analyze the following news article.
 
-Bias Score: <0-100>
+        IMPORTANT:
+        The selected perspective is: {perspective}.
+        The Bias Score, Bias Direction, Sentiment, Loaded Language, and Evidence Quality Score must be determined objectively from the article itself and MUST NOT change simply because a different perspective is selected.
 
-Bias Direction:
-<Left Leaning / Right Leaning / Neutral>
+        The selected perspective should only affect:
+        - Selected Perspective Analysis
+        - Opposing Perspective Analysis
+        - Perspective Rewrite
 
-Sentiment:
-<Positive / Negative / Neutral>
+        When writing the "Selected Perspective Analysis" section, explain how a person with a {perspective} viewpoint would interpret this article.
 
-Loaded Language Detected:
-- word/phrase 1
-- word/phrase 2
-- word/phrase 3
+        When writing the "Perspective Rewrite" section, rewrite the article from the {perspective} perspective while keeping it realistic and consistent with that viewpoint.
 
-Evidence Quality Score:
-<0-100>
+        Return the result in EXACTLY this format.
 
-Reasoning:
-<Explain why the article received this score>
+        Bias Score: <0-100>
 
-Supporter Perspective:
-<How supporters of the article's viewpoint would interpret it>
+        Bias Direction:
+        <Left Leaning / Right Leaning / Neutral>
 
-Critic Perspective:
-<How critics would interpret it>
+        Sentiment:
+        <Positive / Negative / Neutral>
 
-Neutral Rewrite:
-<Rewrite the article objectively and without bias>
+        Loaded Language Detected:
+        - word/phrase 1
+        - word/phrase 2
+        - word/phrase 3
 
-Perspective Rewrite:
-<Rewrite the article from the selected perspective>
+        Evidence Quality Score:
+        <0-100>
 
-Key Takeaways:
-- Point 1
-- Point 2
-- Point 3
+        Reasoning:
+        <Explain why the article received this score and how the selected perspective might evaluate the framing>
 
-Perspective Requested:
-{perspective}
+        Selected Perspective Analysis:
+        <Explain how someone with a {perspective} viewpoint would interpret this article>
 
-Article:
-{user_input}
-"""
+        Opposing Perspective Analysis:
+        <Explain how someone with an opposing viewpoint would interpret this article>
+
+        Neutral Rewrite:
+        <Rewrite the article objectively and without bias>
+
+        Perspective Rewrite:
+        <Rewrite the article from the {perspective} perspective>
+
+        Key Takeaways:
+        - Point 1
+        - Point 2
+        - Point 3
+
+        Article:
+        {user_input}
+        """
 
             try:
                 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -206,7 +218,7 @@ Article:
 if st.button("Test Gemini"):
 
     try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
 
         response = model.generate_content(
             "Explain media bias in one sentence."
