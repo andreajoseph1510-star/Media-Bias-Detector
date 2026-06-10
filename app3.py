@@ -1,69 +1,118 @@
 import streamlit as st
 import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
 # --- Page Config ---
 st.set_page_config(
-    page_title="Media Bias Detector",
-    page_icon="📰",
+    page_title="Reality Lens AI",
+    page_icon="🌎",
     layout="wide",
 )
-from dotenv import load_dotenv
-import os
-import google.generativeai as genai
 
+# --- Load Environment ---
 load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-genai.configure(api_key=GEMINI_API_KEY)
-
-model = genai.GenerativeModel("gemini-2.5-flash")
-st.write("API Key Loaded:", GEMINI_API_KEY is not None)
-# --- Custom CSS for Black-Green Neon Theme ---
+# --- Custom CSS for Black-Green Theme ---
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
     body {
         background-color: #000000;
         color: #00FF00;
+        font-family: 'Press Start 2P', cursive;
     }
+
     .stTextArea textarea {
         background-color: #111111;
         color: #00FF00;
-        border: 1px solid #00FF00;
+        border: 2px solid #00FF00;
+        font-family: 'Press Start 2P', cursive;
     }
+
     .stButton>button {
         background-color: #00FF00;
         color: #000000;
         border-radius: 8px;
         font-weight: bold;
+        font-family: 'Press Start 2P', cursive;
+        transition: 0.3s;
     }
+
+    .stButton>button:hover {
+        background-color: #00cc00;
+        transform: scale(1.05);
+    }
+
     .stMarkdown, .stMarkdown p, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         color: #00FF00 !important;
+        font-family: 'Press Start 2P', cursive;
     }
-    .reportview-container .markdown-text-container {
-        color: #00FF00;
+
+    .robot {
+        position: relative;
+        animation: moveRobot 6s infinite alternate ease-in-out;
+        width: 120px;
+        margin: auto;
+    }
+
+    @keyframes moveRobot {
+        0% { transform: translateX(-60px); }
+        100% { transform: translateX(60px); }
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# --- App Title ---
-st.markdown("<h1 style='text-align: center;'>📰 Media Bias Detector</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Analyze media text for bias, reasoning, and neutral rewriting</p>", unsafe_allow_html=True)
+# --- Header ---
+st.markdown(
+    """
+    <div style='text-align:center;'>
+        <img src='https://cdn-icons-png.flaticon.com/512/4712/4712100.png' class='robot'>
+        <h1>🌎 Reality Lens AI</h1>
+        <p>See Every Side of the Story</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- Input Section ---
 st.subheader("Paste or Upload Media Content")
-user_input = st.text_area("Enter article, post, or snippet:", height=200)
 
-uploaded_file = st.file_uploader("Or upload a text file", type=["txt"])
+user_input = st.text_area(
+    "Enter article, post, or snippet:",
+    height=200
+)
+
+uploaded_file = st.file_uploader(
+    "Or upload a text file",
+    type=["txt"]
+)
 
 if uploaded_file is not None:
     user_input = uploaded_file.read().decode("utf-8")
 
-# --- Action Button ---
+# --- Perspective Selection ---
+st.subheader("Perspective Comparison")
+
+perspective = st.selectbox(
+    "Choose a perspective",
+    [
+        "Neutral",
+        "Progressive",
+        "Conservative",
+        "Optimistic",
+        "Pessimistic"
+    ]
+)
+
+# --- Analyze Button ---
 if st.button("Analyze Bias"):
+
     if user_input.strip() == "":
         st.warning("⚠️ Please provide some text to analyze.")
 
@@ -71,39 +120,108 @@ if st.button("Analyze Bias"):
         with st.spinner("Analyzing article..."):
 
             prompt = f"""
-            Analyze this article.
+Analyze the following news article and return the result in EXACTLY this format.
 
-            Return ONLY in this format:
+Bias Score: <0-100>
 
-            Bias Score: <0-100>
+Bias Direction:
+<Left Leaning / Right Leaning / Neutral>
 
-            Sentiment:
-            <Positive/Negative/Neutral>
+Sentiment:
+<Positive / Negative / Neutral>
 
-            Reasoning:
-            <Explain the bias>
+Loaded Language Detected:
+- word/phrase 1
+- word/phrase 2
+- word/phrase 3
 
-            Neutral Rewrite:
-            <Rewrite objectively>
+Evidence Quality Score:
+<0-100>
 
-            Article:
-            {user_input}
-            """
+Reasoning:
+<Explain why the article received this score>
 
-            response = model.generate_content(prompt)
+Supporter Perspective:
+<How supporters of the article's viewpoint would interpret it>
 
-            st.success("✅ Analysis Complete")
+Critic Perspective:
+<How critics would interpret it>
 
-            st.markdown("## Analysis Result")
-            st.write(response.text)
+Neutral Rewrite:
+<Rewrite the article objectively and without bias>
+
+Perspective Rewrite:
+<Rewrite the article from the selected perspective>
+
+Key Takeaways:
+- Point 1
+- Point 2
+- Point 3
+
+Perspective Requested:
+{perspective}
+
+Article:
+{user_input}
+"""
+
+            try:
+                model = genai.GenerativeModel("gemini-2.0-flash")
+
+                response = model.generate_content(prompt)
+
+                st.success("✅ Analysis Complete")
+
+                st.markdown("## Analysis Result")
+                st.write(response.text)
+
+                # --- Bias Meter ---
+                try:
+                    score_line = response.text.split(
+                        "Bias Score:"
+                    )[1].split("\n")[0]
+
+                    bias_score = int(score_line.strip())
+
+                    st.subheader("Bias Meter")
+
+                    st.progress(bias_score)
+
+                    if bias_score < 30:
+                        st.success("🟢 Low Bias")
+
+                    elif bias_score < 70:
+                        st.warning("🟡 Moderate Bias")
+
+                    else:
+                        st.error("🔴 High Bias")
+
+                except:
+                    st.info("Could not generate bias meter.")
+
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+# --- Test Gemini Button ---
+if st.button("Test Gemini"):
+
+    try:
+        model = genai.GenerativeModel("gemini-2.0-flash")
+
+        response = model.generate_content(
+            "Explain media bias in one sentence."
+        )
+
+        st.success("✅ Gemini Connected!")
+        st.write(response.text)
+
+    except Exception as e:
+        st.error(f"Gemini Error: {e}")
 
 # --- Footer ---
 st.markdown("<hr>", unsafe_allow_html=True)
-#st.markdown("<p style='text-align: center;'>Made with 💚 Neon & Streamlit</p>", unsafe_allow_html=True)
-if st.button("Test Gemini"):
-    response = model.generate_content(
-        "Explain media bias in one sentence."
-    )
 
-    st.success("Gemini Connected!")
-    st.write(response.text)
+st.markdown(
+    "<p style='text-align:center;'>Built with Streamlit + Gemini AI 🚀</p>",
+    unsafe_allow_html=True
+)
