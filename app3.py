@@ -32,7 +32,31 @@ st.markdown(
         border: 2px solid #00FF00;
         font-family: 'Press Start 2P', cursive;
     }
-
+    /* --- Neon Blue Section Headers --- */
+    .neon-header {
+        color: #00ccff;                     /* light neon blue */
+        text-shadow: 0 0 8px #00ccff, 0 0 16px #00ccff;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    /* --- Improve readability for analysis output --- */
+    .analysis-output {
+        font-family: 'VT323', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #00cc00;
+        background-color: #0a0a0a;
+        border: 1px solid #00ff00;
+        border-radius: 6px;
+        padding: 15px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        white-space: pre-wrap;
+    }
     .stButton>button {
         background-color: #00FF00;
         color: #000000;
@@ -186,6 +210,44 @@ if st.button("Analyze Bias"):
 
                 st.markdown("## Analysis Result")
                 st.write(response.text)
+                # --- Bias Direction Indicator ---
+                st.subheader("Bias Direction")
+                if "Left" in response.text:
+                    st.write("⬅️ Left Leaning")
+                elif "Right" in response.text:
+                    st.write("➡️ Right Leaning")
+                else:
+                    st.write("⚖️ Neutral")
+
+                # --- Evidence Quality Meter ---
+                try:
+                    eq_line = response.text.split("Evidence Quality Score:")[1].split("\n")[0]
+                    eq_score = int(eq_line.strip())
+                    st.subheader("Evidence Quality")
+                    st.progress(eq_score)
+                except:
+                    st.info("Could not extract evidence quality score.")
+
+                # --- Multi-Column Perspective Comparison ---
+                st.subheader("Perspective Comparison")
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("### Selected Perspective")
+                    st.write(response.text.split("Selected Perspective Analysis:")[1].split("Opposing")[0])
+                with col2:
+                    st.markdown("### Opposing Perspective")
+                    st.write(response.text.split("Opposing Perspective Analysis:")[1].split("Neutral Rewrite:")[0])
+
+                # --- Collapsible Sections ---
+                with st.expander("Neutral Rewrite"):
+                    st.write(response.text.split("Neutral Rewrite:")[1].split("Perspective Rewrite:")[0])
+
+                with st.expander("Perspective Rewrite"):
+                    st.write(response.text.split("Perspective Rewrite:")[1].split("Key Takeaways:")[0])
+
+                with st.expander("Key Takeaways"):
+                    st.write(response.text.split("Key Takeaways:")[1])
+
 
                 # --- Bias Meter ---
                 try:
