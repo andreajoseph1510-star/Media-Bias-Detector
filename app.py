@@ -10,10 +10,9 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- Load Environment ---
-load_dotenv()
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+# --- Gemini Setup ---
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 # --- Custom CSS for Black-Green + Neon Blue Theme ---
 st.markdown(
     """
