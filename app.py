@@ -37,7 +37,7 @@ st.markdown(
     .neon-header {
         font-family: 'Press Start 2P', cursive;   /* keep pixel font for headings */
         color: #00bfff;                           /* lighter neon blue */
-        text-shadow: 0 0 2px #00bfff, 0 0 4px #00bfff; /* reduced glow */
+        text-shadow: 0 0 1px #00bfff, 0 0 2px #00bfff; /* reduced glow */
         font-size: 16px;
         font-weight: bold;
         margin-top: 25px;
@@ -45,6 +45,17 @@ st.markdown(
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+    /* --- Light glow only for main title --- */
+    .main-title {
+        font-family: 'Press Start 2P', cursive;   /* keep pixel font */
+        color: #00ccff;                           /* bright cyan */
+        text-shadow: 0 0 4px #00bbff, 0 0 8px #00bbff; /* gentle glow */
+        font-size: 28px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
     /* --- Normal readable content --- */
     .analysis-output, .stTextArea textarea, .stMarkdown p {
         font-family: 'Inter', sans-serif;        /* clean modern font */
@@ -81,6 +92,12 @@ st.markdown(
         color: #00FF00 !important;
         font-family: 'Press Start 2P', cursive;
     }
+    .stAlert {
+        border: 1px solid #00ff00;
+        border-radius: 6px;
+        background-color: #0a0a0a;
+        color: #00ff00;
+    }
 
     .robot {
         position: relative;
@@ -103,8 +120,8 @@ st.markdown(
     """
     <div style='text-align:center;'>
         <img src='https://cdn-icons-png.flaticon.com/512/4712/4712100.png' class='robot'>
-        <h1 class='neon-header'>🌎 Reality Lens AI</h1>
-        <p>See Every Side of the Story</p>
+        <h1 class='main-title'>🌎 Reality Lens AI</h1>
+        <p>Decode Bias. Discover Truth.</p>
     </div>
     """,
     unsafe_allow_html=True
@@ -226,8 +243,15 @@ if st.button("Analyze Bias"):
                 except:
                     st.info("Could not generate bias meter.")
 
+            
             except Exception as e:
-                st.error(f"Error: {e}")
+                error_message = str(e)
+                if "429" in error_message or "quota" in error_message.lower():
+                    st.error("🚫 Gemini API quota exceeded. Please wait a bit or check your API usage at [ai.dev/rate-limit](https://ai.dev/rate-limit).")
+                    st.info("Tip: You can upgrade your plan or switch to a new API key to continue using Reality Lens AI.")
+                else:
+                    st.error("⚠️ Something went wrong while analyzing. Please try again later.")
+
 
 # --- Test Gemini Button ---
 if st.button("Test Gemini"):
