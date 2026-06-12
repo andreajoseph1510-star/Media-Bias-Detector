@@ -217,13 +217,34 @@ if st.button("Analyze Bias"):
                     st.markdown("<div class='neon-header'>Opposing Perspective</div>", unsafe_allow_html=True)
                     st.write(response.text.split("Opposing Perspective Analysis:")[1].split("Neutral Rewrite:")[0])
 
-                # --- Collapsible Sections ---
+               # --- Collapsible Sections ---
                 with st.expander("Neutral Rewrite"):
-                    st.write(response.text.split("Neutral Rewrite:")[1].split("Perspective Rewrite:")[0])
+                    st.markdown('<div class="custom-section">' + 
+                                response.text.split("Neutral Rewrite:")[1].split("Perspective Rewrite:")[0] + 
+                                '</div>', unsafe_allow_html=True)
+
                 with st.expander("Perspective Rewrite"):
-                    st.write(response.text.split("Perspective Rewrite:")[1].split("Key Takeaways:")[0])
+                    st.markdown('<div class="custom-section">' + 
+                                response.text.split("Perspective Rewrite:")[1].split("Key Takeaways:")[0] + 
+                                '</div>', unsafe_allow_html=True)
+
                 with st.expander("Key Takeaways"):
-                    st.write(response.text.split("Key Takeaways:")[1])
+                    st.markdown('<div class="custom-section">' + 
+                                response.text.split("Key Takeaways:")[1] + 
+                                '</div>', unsafe_allow_html=True)
+
+                # --- CSS for those three sections only ---
+                st.markdown("""
+                <style>
+                .custom-section {
+                    font-family: 'Inter', sans-serif;   /* readable font */
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #00ff00;                     /* neon green */
+                    text-shadow: 0 0 3px #00ff00;       /* subtle glow */
+                }
+                </style>
+                """, unsafe_allow_html=True)
 
                 # --- Bias Meter ---
                 try:
