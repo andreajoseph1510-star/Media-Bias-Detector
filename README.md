@@ -1,7 +1,9 @@
 # Reality Lens AI
-##Live Demo
+
 
 🔗 Deployed App:https://reality-lens-ai.streamlit.app/
+## Demo Video
+[Watch Demo]
 
 ## Overview
 
@@ -12,6 +14,8 @@ The application analyzes articles using advanced language models and presents mu
 Built for the **GitHub Copilot Creative Apps Challenge**, Reality Lens AI demonstrates how AI can be used to improve information awareness and help users understand how narratives change across perspectives.
 
 ---
+<img width="1917" height="1005" alt="Screenshot 2026-06-12 100701" src="https://github.com/user-attachments/assets/5a868048-3bfb-4c35-ac32-533074afaffb" />
+
 
 ## Problem Statement
 
@@ -28,6 +32,8 @@ Reality Lens AI helps users:
 * Improve media literacy and critical thinking
 
 ---
+<img width="1918" height="767" alt="Screenshot 2026-06-12 100803" src="https://github.com/user-attachments/assets/6f32ed5c-a131-43bd-940b-82fdbd136761" />
+
 
 ## Features
 
@@ -54,19 +60,12 @@ Determines the emotional tone of the content:
 ### Loaded Language Detection
 
 Highlights emotionally charged words and phrases that may influence reader perception.
+<img width="1918" height="1000" alt="Screenshot 2026-06-12 100421" src="https://github.com/user-attachments/assets/07f2ab37-02b0-4523-8e37-0792bd5e9e1f" />
+
 
 ### Evidence Quality Scoring
 
 Evaluates how strongly the article supports its claims with evidence and factual information.
-
-### Multi-Perspective Analysis
-
-Provides:
-
-* Supporter Perspective
-* Critic Perspective
-
-to help users understand how different audiences may interpret the same article.
 
 ### Perspective Comparison
 
@@ -77,6 +76,11 @@ Users can generate analysis from different viewpoints:
 * Conservative
 * Optimistic
 * Pessimistic
+<img width="1880" height="736" alt="Screenshot 2026-06-12 093148" src="https://github.com/user-attachments/assets/c55763f7-4f47-4ced-8e5b-5a0d4e13a3bd" />
+
+<img width="1847" height="876" alt="Screenshot 2026-06-12 100442" src="https://github.com/user-attachments/assets/061c1d6f-4dfc-409f-8766-0294f5aee203" />
+
+  
 
 ### Neutral Rewrite
 
@@ -85,10 +89,16 @@ Creates an objective and balanced version of the article while preserving the co
 ### Key Takeaways
 
 Summarizes the most important points from the content.
+<img width="1802" height="677" alt="Screenshot 2026-06-12 100528" src="https://github.com/user-attachments/assets/58b5a2a3-3305-48d9-b8df-ef6f15e792c0" />
+
+
+
+
 
 ### Bias Meter Visualization
 
 Displays a visual representation of article bias using Streamlit components.
+<img width="1796" height="202" alt="Screenshot 2026-06-12 100549" src="https://github.com/user-attachments/assets/de77a0fe-9272-48d5-bf59-ec51801a52bd" />
 
 ---
 
