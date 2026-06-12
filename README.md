@@ -2,8 +2,6 @@
 
 
 🔗 Deployed App:https://reality-lens-ai.streamlit.app/
-## Demo Video
-[Watch Demo]
 
 ## Overview
 
