@@ -252,15 +252,7 @@ if st.button("Analyze Bias"):
                     st.error("⚠️ Something went wrong while analyzing. Please try again later.")
 
 
-# --- Test Gemini Button ---
-if st.button("Test Gemini"):
-    try:
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        response = model.generate_content("Explain media bias in one sentence.")
-        st.success("✅ Gemini Connected!")
-        st.write(response.text)
-    except Exception as e:
-        st.error(f"Gemini Error: {e}")
+
 
 # --- Footer ---
 st.markdown("<hr>", unsafe_allow_html=True)
