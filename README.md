@@ -216,15 +216,14 @@ streamlit run app.py
 
 ### Home Screen
 
-(Add screenshot)
+
 
 ### Analysis Results
 
-(Add screenshot)
+
 
 ### Perspective Comparison
 
-(Add screenshot)
 
 ---
 
